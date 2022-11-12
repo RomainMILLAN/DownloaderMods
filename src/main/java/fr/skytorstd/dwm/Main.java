@@ -29,6 +29,9 @@ public class Main {
         boolean configFolder = false;
         File configJSON = new File("config.json");
         String folder = "";
+        while(!configJSON.exists()){
+            (new downloader("https://romainmillan.fr/DWM/config.json", new File("config.json"))).run();
+        }
         if(configJSON.exists()){
             JSONParser parserConfig = new JSONParser();
             Object configObj = parserConfig.parse(new FileReader(configJSON));
@@ -37,7 +40,7 @@ public class Main {
             folder = (String)jsonObjectConfig.get("folder");
 
             if(!folder.equalsIgnoreCase("")){
-                System.out.print("Un dossier à etait trouve dans la configuration, voulez-vous l'utiliser pour telecharger les mods ? ("+folder+"): [Y/N]");
+                System.out.print("Un dossier a ete trouve dans la configuration, voulez-vous l'utiliser pour telecharger les mods ? ("+folder+"): [Y/N]");
                 Scanner scannerConfig = new Scanner(System. in);
                 String resConfig = scannerConfig.nextLine();
                 if (resConfig.equalsIgnoreCase("Y")){
@@ -49,7 +52,7 @@ public class Main {
             System.out.print("Entrer le dossier ou telecharger les mods: ");
             Scanner scanner = new Scanner(System. in);
             folder = scanner.nextLine();
-            System.out.println("Dossier enregistrer ("+folder+")");
+            System.out.println("Dossier enregistre ("+folder+")");
         }
 
 
@@ -89,14 +92,14 @@ public class Main {
                 File modFile = new File(linkModFile);
                 if (!modFile.exists()){
                     (new downloader((String) pair.getValue(), modFile)).run();
-                    System.out.println(nameMod + " downloaded");
+                    System.out.println(nameMod + " telecharge");
                 }else {
-                    System.out.println(nameMod + " deja present dans le dossier");
+                    System.out.println(nameMod + " est deja present dans le dossier");
                 }
             }
 
 
-            System.out.println("\n\nTous les mods on etait telecharger avec succes !");
+            System.out.println("\n\nTous les mods on etait telecharge avec succes !");
         }catch(Exception ex) {
             ex.printStackTrace();
         }
