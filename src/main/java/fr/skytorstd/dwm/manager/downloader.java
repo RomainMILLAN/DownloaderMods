@@ -84,8 +84,6 @@ public class downloader {
                 String percent = String.format("%.0f", percentDownloaded);
 
                 if(!this.beforeString.contains(percent)){
-                    //this.clearConsole();
-                    //System.out.println("[" + this.out.getName() + "] Download at " + percent + "%");
                     System.out.print(ConsoleColor.YELLOW + "["+current+"/"+nbMods+"] " + ConsoleColor.BLUE + this.out.getName() + ": " + ConsoleColor.PURPLE + percent + "%" + ConsoleColor.RESET + " \r");
                     this.beforeString = percent;
                 }

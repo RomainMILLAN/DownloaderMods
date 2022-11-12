@@ -3,8 +3,12 @@ package fr.skytorstd.dwm;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
+import fr.skytorstd.dwm.manager.ConsoleColor;
 import fr.skytorstd.dwm.manager.downloader;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -28,6 +32,7 @@ public class Main {
         boolean configFolder = false;
         File ConfigJsonFile = new File("config.json");
         String folder = "";
+        String modpack = "";
         while(!ConfigJsonFile.exists()){
             (new downloader("https://drive.google.com/uc?export=download&id=1eCFLwNaQiZjtWy_Ykh-JJnBOxGAr71ZG", new File("config.json"))).run();
         }
@@ -37,6 +42,7 @@ public class Main {
             JSONArray ConfigJsonArray = (JSONArray)ConfigObject;
             JSONObject ConfigJsonObject = (JSONObject) ConfigJsonArray.get(0);
             folder = (String)ConfigJsonObject.get("folder");
+            modpack = (String)ConfigJsonObject.get("modpacks");
 
             if(!folder.equalsIgnoreCase("")){
                 System.out.print("Un dossier a ete trouve dans la configuration, voulez-vous l'utiliser pour telecharger les mods ? ('"+folder+"'): [Y/N] ");
@@ -48,16 +54,22 @@ public class Main {
             }
         }
         if(configFolder == false){
-            System.out.print("Entrer le dossier ou telecharger les mods: ");
-            Scanner FolderModsScanner = new Scanner(System. in);
-            folder = FolderModsScanner.nextLine();
-            System.out.println("Dossier enregistre ('"+folder+"')");
+            folder = getFolderPathByUser();
+
+            JSONParser RewriteConfigJSONParser = new JSONParser();
+            Object RewriteConfigJSONObject = RewriteConfigJSONParser.parse(new FileReader("config.json"));
+            JSONArray RewriteConfigJSONJsonArray = (JSONArray)RewriteConfigJSONObject;
+            JSONObject RewriteConfigJSONJsonObject = (JSONObject) RewriteConfigJSONJsonArray.get(0);
+            RewriteConfigJSONJsonObject.put("folder", folder);
+            Files.write(Path.of("config.json"), RewriteConfigJSONJsonObject.toJSONString().getBytes());
+            System.out.println("Dossier enregistre en configuration ('"+folder+"')");
         }
 
 
         //LINK JSON
+        (new downloader(modpack, new File("modpacks.json"))).run();
         JSONParser ConfigModpacksParser = new JSONParser();
-        Object ConfigModpackObject = ConfigModpacksParser.parse(new FileReader(ConfigJsonFile));
+        Object ConfigModpackObject = ConfigModpacksParser.parse(new FileReader("modpacks.json"));
         JSONArray ConfigModPackJsonArray = (JSONArray)ConfigModpackObject;
         JSONObject ConfigModpackJsonObject = (JSONObject) ConfigModPackJsonArray.get(0);
 
@@ -90,6 +102,12 @@ public class Main {
 
         String ModpackNameJSON = modpackSelect+".json";
         (new downloader(ModpackJsonURL, new File(ModpackNameJSON))).run();
+
+        File folderDirectory = new File(folder);
+        File[] filesToClear = folderDirectory.listFiles();
+        for(File f : filesToClear){
+            f.delete();
+        }
 
 
         //DOWNLOAD ALL MODS
@@ -125,9 +143,27 @@ public class Main {
 
 
             System.out.println("\n\nTous les mods on etait telecharge avec succes !");
-            System.exit(1);
         }catch(Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    private static String getFolderPathByUser(){
+        System.out.print("Entrer le dossier ou telecharger les mods: \r");
+        Scanner FolderModsScanner = new Scanner(System. in);
+        String folder = FolderModsScanner.nextLine();
+
+        String verif = "";
+        do {
+            System.out.print(ConsoleColor.RED + "ATTENTION: Le dossier sera vider avant le téléchargement des mods, êtes-vous sûre de vouloir faire ceci ? [Y/N]: " + ConsoleColor.RESET);
+            Scanner FolderModsScannerVerif = new Scanner(System. in);
+            verif = FolderModsScannerVerif.nextLine();
+        }while(!verif.equalsIgnoreCase("Y") && !verif.equalsIgnoreCase("N"));
+
+        if(verif.equalsIgnoreCase("Y")){
+            return folder;
+        }else {
+            return getFolderPathByUser();
         }
     }
 }
