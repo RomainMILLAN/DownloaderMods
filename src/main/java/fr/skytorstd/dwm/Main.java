@@ -21,9 +21,11 @@ public class Main {
                 "\\ \\ \\/\\ \\ \\ \\ \\/\\ \\  \\ \\ \\/ \".\\ \\  \\ \\ \\-.  \\  \\ \\ \\____  \\ \\ \\/\\ \\  \\ \\  __ \\  \\ \\ \\/\\ \\ \\ \\ \\-./\\ \\  \\ \\ \\/\\ \\  \\ \\ \\/\\ \\ \\ \\___  \\  \n" +
                 " \\ \\____-  \\ \\_____\\  \\ \\__/\".~\\_\\  \\ \\_\\\\\"\\_\\  \\ \\_____\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\____-  \\ \\_\\ \\ \\_\\  \\ \\_____\\  \\ \\____-  \\/\\_____\\ \n" +
                 "  \\/____/   \\/_____/   \\/_/   \\/_/   \\/_/ \\/_/   \\/_____/   \\/_____/   \\/_/\\/_/   \\/____/   \\/_/  \\/_/   \\/_____/   \\/____/   \\/_____/ ");
-        String modpack = "usbc";
-        System.out.println("Bienvenue dans le télécharger du modpack " + modpack + "\n\n");
+        String modpack = "USB-C";
+        System.out.println("Bienvenue dans le telecharger du modpack " + modpack + "\n\n");
 
+
+        //CONFIG
         boolean configFolder = false;
         File configJSON = new File("config.json");
         String folder = "";
@@ -35,7 +37,7 @@ public class Main {
             folder = (String)jsonObjectConfig.get("folder");
 
             if(!folder.equalsIgnoreCase("")){
-                System.out.print("Un dossier à était trouvé dans la configuration, voulez-vous l'utiliser pour télécharger les mods ? ("+folder+"): [Y/N]");
+                System.out.print("Un dossier à etait trouve dans la configuration, voulez-vous l'utiliser pour telecharger les mods ? ("+folder+"): [Y/N]");
                 Scanner scannerConfig = new Scanner(System. in);
                 String resConfig = scannerConfig.nextLine();
                 if (resConfig.equalsIgnoreCase("Y")){
@@ -43,14 +45,15 @@ public class Main {
                 }
             }
         }
-
         if(configFolder == false){
-            System.out.print("Entrer le dossier ou télécharger les mods: ");
+            System.out.print("Entrer le dossier ou telecharger les mods: ");
             Scanner scanner = new Scanner(System. in);
             folder = scanner.nextLine();
             System.out.println("Dossier enregistrer ("+folder+")");
         }
 
+
+        //LINK JSON
         JSONParser parserJSONFile = new JSONParser();
         Object jsonFileObj = parserJSONFile.parse(new FileReader(configJSON));
         JSONArray jsonArrayjsonFile = (JSONArray)jsonFileObj;
@@ -58,6 +61,9 @@ public class Main {
 
         String urlJSON = (String) jsonObjectjsonFile.get("linkJSON");
         (new downloader(urlJSON, new File("mods.json"))).run();
+
+
+        //DOWNLOAD ALL MODS
         try {
             JSONParser parser = new JSONParser();
             parser = new JSONParser();
@@ -65,7 +71,6 @@ public class Main {
             JSONArray jsonarray = (JSONArray)obj;
 
             JSONObject jsonObject = (JSONObject)jsonarray.get(0);
-            System.out.println("nbMods = "+(String) jsonObject.get("nbMods"));
 
             Map address = ((Map)jsonObject.get("mods"));
 
@@ -80,12 +85,12 @@ public class Main {
                     (new downloader((String) pair.getValue(), modFile)).run();
                     System.out.println(nameMod + " downloaded");
                 }else {
-                    System.out.println(nameMod + " déjà présent dans le dossier");
+                    System.out.println(nameMod + " deja present dans le dossier");
                 }
             }
 
 
-            System.out.println("\n\nTous les mods on était télécharger avec succès !");
+            System.out.println("\n\nTous les mods on etait telecharger avec succes !");
         }catch(Exception ex) {
             ex.printStackTrace();
         }
