@@ -1,3 +1,5 @@
 fr\skytorstd\dwm\Main.class
+fr\skytorstd\dwm\manager\ConsoleColor.class
 fr\skytorstd\dwm\manager\downloader.class
+fr\skytorstd\dwm\Test.class
 fr\skytorstd\dwm\manager\configuration.class
