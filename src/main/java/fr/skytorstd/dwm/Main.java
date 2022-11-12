@@ -29,7 +29,7 @@ public class Main {
         File ConfigJsonFile = new File("config.json");
         String folder = "";
         while(!ConfigJsonFile.exists()){
-            (new downloader("https://romainmillan.fr/DWM/config.json", new File("config.json"))).run();
+            (new downloader("https://drive.google.com/uc?export=download&id=1eCFLwNaQiZjtWy_Ykh-JJnBOxGAr71ZG", new File("config.json"))).run();
         }
         if(ConfigJsonFile.exists()){
             JSONParser ConfigParser = new JSONParser();
