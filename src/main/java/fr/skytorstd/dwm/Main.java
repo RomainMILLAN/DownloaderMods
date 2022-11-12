@@ -80,7 +80,13 @@ public class Main {
                 String url = (String) pair.getValue();
                 String urlArgs[] = url.split("/");
                 String nameMod = urlArgs[urlArgs.length-1];
-                File modFile = new File(folder+"\\"+nameMod);
+                String linkModFile = "";
+                if(folder.endsWith("\\")){
+                    linkModFile = folder+nameMod;
+                }else {
+                    linkModFile = folder+"\\"+nameMod;
+                }
+                File modFile = new File(linkModFile);
                 if (!modFile.exists()){
                     (new downloader((String) pair.getValue(), modFile)).run();
                     System.out.println(nameMod + " downloaded");
