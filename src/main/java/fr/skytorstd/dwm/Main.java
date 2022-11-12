@@ -40,7 +40,7 @@ public class Main {
             folder = (String)jsonObjectConfig.get("folder");
 
             if(!folder.equalsIgnoreCase("")){
-                System.out.print("Un dossier a ete trouve dans la configuration, voulez-vous l'utiliser pour telecharger les mods ? ("+folder+"): [Y/N]");
+                System.out.print("Un dossier a ete trouve dans la configuration, voulez-vous l'utiliser pour telecharger les mods ? ("+folder+"): [Y/N] ");
                 Scanner scannerConfig = new Scanner(System. in);
                 String resConfig = scannerConfig.nextLine();
                 if (resConfig.equalsIgnoreCase("Y")){
@@ -100,6 +100,8 @@ public class Main {
 
 
             System.out.println("\n\nTous les mods on etait telecharge avec succes !");
+            Thread.sleep(100);
+            System.exit(1);
         }catch(Exception ex) {
             ex.printStackTrace();
         }
