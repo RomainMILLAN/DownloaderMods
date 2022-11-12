@@ -1,6 +1,8 @@
 [
   {
     "folder": "C:\\Users\\romai\\AppData\\Roaming\\.minecraft\\MODSTEST",
-    "linkJSON": "https://romainmillan.fr/DWM/usbc.json"
+    "modpacks": {
+      "usb-c": "https://drive.google.com/uc?export=download&id=11fxzLzldmBL-qnJjywKJzoZSmgP09KET"
+    }
   }
 ]
