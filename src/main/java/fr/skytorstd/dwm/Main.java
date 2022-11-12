@@ -63,7 +63,7 @@ public class Main {
         JSONObject jsonObjectjsonFile = (JSONObject) jsonArrayjsonFile.get(0);
 
         String urlJSON = (String) jsonObjectjsonFile.get("linkJSON");
-        (new downloader(urlJSON, new File("mods.json"))).run();
+        //(new downloader(urlJSON, new File("mods.json"))).run();
 
 
         //DOWNLOAD ALL MODS
@@ -78,11 +78,10 @@ public class Main {
             Map address = ((Map)jsonObject.get("mods"));
 
             Iterator<Map.Entry> itr1 = address.entrySet().iterator();
+            int currentMod = 1;
             while (itr1.hasNext()) {
                 Map.Entry pair = itr1.next();
-                String url = (String) pair.getValue();
-                String urlArgs[] = url.split("/");
-                String nameMod = urlArgs[urlArgs.length-1];
+                String nameMod = (String) pair.getKey();
                 String linkModFile = "";
                 if(folder.endsWith("\\")){
                     linkModFile = folder+nameMod;
@@ -91,11 +90,12 @@ public class Main {
                 }
                 File modFile = new File(linkModFile);
                 if (!modFile.exists()){
-                    (new downloader((String) pair.getValue(), modFile)).run();
-                    System.out.println(nameMod + " telecharge");
+                    (new downloader((String) pair.getValue(), modFile)).downloadmod(address.size(), currentMod);
+                    //System.out.println(nameMod + " telecharge");
                 }else {
                     System.out.println(nameMod + " est deja present dans le dossier");
                 }
+                currentMod++;
             }
 
 
