@@ -3,9 +3,11 @@ package fr.skytorstd.dwm;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLOutput;
 import java.util.*;
 
 import fr.skytorstd.dwm.manager.ConsoleColor;
@@ -28,13 +30,14 @@ public class Main {
         System.out.println("Fait par Wabezeter & Foskcru" + "\n\n\n");
 
 
+        String URLConfig = "https://romainmillan.fr/DWM/config.json";
         //CONFIG
         boolean configFolder = false;
         File ConfigJsonFile = new File("config.json");
         String folder = "";
         String modpack = "";
         while(!ConfigJsonFile.exists()){
-            (new downloader("https://drive.google.com/uc?export=download&id=1eCFLwNaQiZjtWy_Ykh-JJnBOxGAr71ZG", new File("config.json"))).run();
+            (new downloader(URLConfig, new File("config.json"))).run();
         }
         if(ConfigJsonFile.exists()){
             JSONParser ConfigParser = new JSONParser();
@@ -61,7 +64,7 @@ public class Main {
             JSONArray RewriteConfigJSONJsonArray = (JSONArray)RewriteConfigJSONObject;
             JSONObject RewriteConfigJSONJsonObject = (JSONObject) RewriteConfigJSONJsonArray.get(0);
             RewriteConfigJSONJsonObject.put("folder", folder);
-            Files.write(Path.of("config.json"), RewriteConfigJSONJsonObject.toJSONString().getBytes());
+            Files.write(Paths.get("config.json"), RewriteConfigJSONJsonObject.toJSONString().getBytes());
             System.out.println("Dossier enregistre en configuration ('"+folder+"')");
         }
 
@@ -146,16 +149,21 @@ public class Main {
         }catch(Exception ex) {
             ex.printStackTrace();
         }
+
+
+        System.out.print("Fin du programme (Appuyer sur entrer)... ");
+        Scanner EndScanner = new Scanner(System. in);
+        String end = EndScanner.nextLine();
     }
 
     private static String getFolderPathByUser(){
-        System.out.print("Entrer le dossier ou telecharger les mods: \r");
+        System.out.print("Entrer le dossier ou telecharger les mods: ");
         Scanner FolderModsScanner = new Scanner(System. in);
         String folder = FolderModsScanner.nextLine();
 
         String verif = "";
         do {
-            System.out.print(ConsoleColor.RED + "ATTENTION: Le dossier sera vider avant le téléchargement des mods, êtes-vous sûre de vouloir faire ceci ? [Y/N]: " + ConsoleColor.RESET);
+            System.out.print(ConsoleColor.RED + "ATTENTION: Le dossier sera vider avant le telechargement des mods, etes-vous sure de vouloir faire ceci ? [Y/N]: " + ConsoleColor.RESET);
             Scanner FolderModsScannerVerif = new Scanner(System. in);
             verif = FolderModsScannerVerif.nextLine();
         }while(!verif.equalsIgnoreCase("Y") && !verif.equalsIgnoreCase("N"));
