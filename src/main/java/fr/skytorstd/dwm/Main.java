@@ -26,11 +26,11 @@ public class Main {
                 "| | | / _ \\ \\ /\\ / / '_ \\| |/ _ \\ / _` |/ _` |/ _ \\ '__| |\\/| |/ _ \\ / _` / __|\n" +
                 "| |/ / (_) \\ V  V /| | | | | (_) | (_| | (_| |  __/ |  | |  | | (_) | (_| \\__ \\\n" +
                 "|___/ \\___/ \\_/\\_/ |_| |_|_|\\___/ \\__,_|\\__,_|\\___|_|  \\_|  |_/\\___/ \\__,_|___/" );
-        System.out.println("Bienvenue dans le telecharger de modpack !");
         System.out.println("Fait par Wabezeter & Foskcru" + "\n\n\n");
 
 
         String URLConfig = "https://romainmillan.fr/DWM/config.json";
+
         //CONFIG
         boolean configFolder = false;
         File ConfigJsonFile = new File("config.json");
@@ -56,7 +56,8 @@ public class Main {
                 }
             }
         }
-        if(configFolder == false){
+
+        if(!configFolder){
             folder = getFolderPathByUser();
 
             JSONParser RewriteConfigJSONParser = new JSONParser();
